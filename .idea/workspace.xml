@@ -6,6 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="749f55b1-33c3-47ae-830a-f5e0f1e0da20" name="Changes" comment="">
       <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/5. Questions.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.kontial.cloud.service.cloudservice.CloudServiceApplicationTests.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/surefire-reports/com.kontial.cloud.service.cloudservice.CloudServiceApplicationTests.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kontial/cloud/service/cloudservice/CloudServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kontial/cloud/service/cloudservice/CloudServiceApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kontial/cloud/service/cloudservice/PersonController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kontial/cloud/service/cloudservice/PersonController.java" afterDir="false" />

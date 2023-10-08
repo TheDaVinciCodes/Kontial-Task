@@ -1,13 +1,11 @@
 package com.kontial.cloud.service.cloudservice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kontial.cloud.service.cloudservice.PersonController;
 import com.kontial.cloud.service.cloudservice.model.Person;
 import com.kontial.cloud.service.cloudservice.persistence.InMemoryDataSource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -18,7 +16,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +39,7 @@ public class PersonControllerTest {
 
     @Before
     public void setUp() {
-        // Initialize your test data
+        // Initialize the test data
     }
 
     @Test
@@ -86,6 +83,4 @@ public class PersonControllerTest {
                         .content(jsonNewPerson))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
-
-    // Add more test methods for other controller endpoints as needed
 }
