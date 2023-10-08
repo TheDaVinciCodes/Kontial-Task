@@ -1,5 +1,7 @@
 package com.kontial.cloud.service.cloudservice.model;
 
-public record Person(String id, String name) {
+import java.time.LocalDate;
+
+public record Person(String id, String name, LocalDate birthday) {
 
 }
