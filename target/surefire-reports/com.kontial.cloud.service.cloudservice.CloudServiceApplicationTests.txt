@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.kontial.cloud.service.cloudservice.CloudServiceApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 54.718 s - in com.kontial.cloud.service.cloudservice.CloudServiceApplicationTests

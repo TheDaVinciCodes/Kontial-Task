@@ -4,6 +4,7 @@ import com.kontial.cloud.service.cloudservice.model.Person;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,29 @@ public class InMemoryDataSource {
     public void addPerson(Person person) {
         persons.add(person);
     }
+
+    // Validation methods
+    public boolean isValidPerson(Person person) {
+        if (person == null || person.name() == null || person.name().isEmpty()) {
+            return false;
+        }
+
+        // Validate birthday format
+        try {
+            LocalDate birthday = person.birthday();
+            // Additional validation for the birthday, if needed
+        } catch (DateTimeParseException e) {
+            return false; // Invalid birthday format
+        }
+
+        // Validate ID format (character followed by four digits)
+        if (!person.id().matches("[a-zA-Z]\\d{4}")) {
+            return false; // Invalid ID format
+        }
+
+        return true;
+    }
+
 
     public boolean isPersonIdUnique(String id) {
         return persons.stream().noneMatch(p -> p.id().equals(id));

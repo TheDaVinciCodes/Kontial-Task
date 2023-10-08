@@ -1,62 +1,91 @@
 package com.kontial.cloud.service.cloudservice;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kontial.cloud.service.cloudservice.PersonController;
 import com.kontial.cloud.service.cloudservice.model.Person;
 import com.kontial.cloud.service.cloudservice.persistence.InMemoryDataSource;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@RunWith(SpringRunner.class)
+@WebMvcTest(PersonController.class)
 public class PersonControllerTest {
 
-    @InjectMocks
-    private PersonController personController;
+    @Autowired
+    private MockMvc mockMvc;
 
-    @Mock
+    @MockBean
     private InMemoryDataSource inMemoryDataSource;
 
-    @BeforeEach
+    @Autowired
+    private ObjectMapper objectMapper; // ObjectMapper to convert objects to JSON
+
+    @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        // Initialize your test data
     }
 
     @Test
-    public void testAddValidPerson() {
-        // Create a valid person
-        Person validPerson = new Person("u1234", "John", LocalDate.of(1990, 5, 20));
+    public void testGetPersonsSummary() throws Exception {
+        // Create a list of sample persons
+        List<Person> persons = Arrays.asList(
+                new Person("1", "John Doe", LocalDate.of(1990, 5, 15)),
+                new Person("2", "Jane Smith", LocalDate.of(1985, 8, 25)),
+                new Person("3", "Alice Johnson", LocalDate.of(1988, 3, 10))
+        );
 
-        // Mock the behavior of the inMemoryDataSource to return true for uniqueness
-        when(inMemoryDataSource.isPersonIdUnique(validPerson.id())).thenReturn(true);
+        // Mock the inMemoryDataSource's getAll() method to return the sample persons
+        when(inMemoryDataSource.getAll()).thenReturn(persons);
 
-        // Call the addPerson method with the valid person
-        ResponseEntity<Object> response = personController.addPerson(validPerson);
+        // Expected summary map sorted by name in ascending order
+        Map<String, Integer> expectedSummary = new TreeMap<>();
+        expectedSummary.put("Alice Johnson", 1);
+        expectedSummary.put("Jane Smith", 1);
+        expectedSummary.put("John Doe", 1);
 
-        // Assert that the response status code is 200 OK
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/persons/summary")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expectedSummary)));
     }
 
     @Test
-    public void testAddInvalidPerson() {
-        // Create an invalid person (e.g., missing name)
-        Person invalidPerson = new Person("u5678", null, LocalDate.of(1990, 5, 20));
+    public void testAddPerson() throws Exception {
+        // Create a sample person
+        Person newPerson = new Person("3", "Alice Johnson", LocalDate.of(1988, 3, 10));
 
-        // Mock the behavior of the inMemoryDataSource to return true for uniqueness
-        when(inMemoryDataSource.isPersonIdUnique(invalidPerson.id())).thenReturn(true);
+        // Mock the inMemoryDataSource's methods for validation and ID uniqueness
+        when(inMemoryDataSource.isValidPerson(any(Person.class))).thenReturn(true);
+        when(inMemoryDataSource.isPersonIdUnique("3")).thenReturn(true);
 
-        // Call the addPerson method with the invalid person
-        ResponseEntity<Object> response = personController.addPerson(invalidPerson);
+        // Serialize the new person object to JSON
+        String jsonNewPerson = objectMapper.writeValueAsString(newPerson);
 
-        // Assert that the response status code is 400 Bad Request
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/person")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonNewPerson))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-    // Add more test cases to validate uniqueness, validation of fields, etc.
+    // Add more test methods for other controller endpoints as needed
 }

@@ -64,7 +64,7 @@ public class PersonController {
 	@RequestMapping(value = "/person", method = RequestMethod.POST)
 	public ResponseEntity<Object> addPerson(@RequestBody Person person) {
 		// Validate the person data
-		if (person == null || !isValidPerson(person)) {
+		if (person == null || !inMemoryDataSource.isValidPerson(person)) {
 			return ResponseEntity.badRequest().body("Invalid person data");
 		}
 
@@ -79,21 +79,4 @@ public class PersonController {
 		return ResponseEntity.ok().build();
 	}
 
-	// Validation methods
-	private boolean isValidPerson(Person person) {
-		if (person == null || person.name() == null || person.name().isEmpty()) {
-			return false;
-		}
-
-		// Add more validation for the birthday format if needed
-
-		// Add more validation for the ID format if needed
-
-		return true;
-	}
-
-	private boolean isUniquePersonId(String id) {
-		List<Person> existingPersons = inMemoryDataSource.getAll();
-		return existingPersons.stream().noneMatch(p -> p.id().equals(id));
-	}
 }
